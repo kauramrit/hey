@@ -1,0 +1,266 @@
+#include <iostream>
+using namespace std;
+
+struct node
+{
+    int data;
+    struct node *next;
+}*head;
+node* create_node(int value)
+{
+
+        struct node *ptr;
+        ptr=new(struct node);
+        if(ptr==NULL)
+        {
+            cout<<"not allowed";
+        }
+        else
+        {
+          ptr->data=value;
+          ptr->next=NULL;
+          return ptr;
+        }
+
+    }
+
+void display(node *ptr)
+{
+    ptr=head;
+    while(ptr->next!=NULL)
+    {
+        cout<<ptr->data<<"->";
+        ptr=ptr->next;
+    }
+    cout<<ptr->data<<"->NULL";
+}
+
+
+void insert_begin()
+{
+    int value;
+    struct node *ptr,*p;
+    cout<<"enter value"<<endl;
+    cin>>value;
+    ptr=create_node(value);
+    if(head==NULL)
+    {
+        head=ptr;
+    }
+    else
+    {
+        p=head;
+        head=ptr;
+        ptr->next=p;
+    }
+    display(ptr);
+}
+
+void insert_last()
+{
+    int value;
+    struct node *s,*ptr;
+    cout<<"enter value"<<endl;
+    cin>>value;
+    ptr=create_node(value);
+    s=head;
+    while(s->next!=NULL)
+    {
+        s=s->next;
+    }
+    ptr->next=NULL;
+    s->next=ptr;
+    display(ptr);
+}
+
+void insert_pos()
+{
+    int value,i,count=0,pos;
+    cout<<"enter value"<<endl;
+    cin>>value;
+    struct node *temp,*ptr,*s;
+    temp=create_node(value);
+    cout<<"enter pos"<<endl;
+    cin>>pos;
+    s=head;
+    while(s!=NULL)
+    {
+        s=s->next;
+        count++;
+    }
+    if(pos==1)
+    {
+        if(head==NULL)
+        {
+            head=temp;
+            temp->next=temp;
+        }
+        else
+        {
+            ptr=head;
+            head=temp;
+            temp->next=ptr;
+        }
+    }
+    else if(pos>1 && pos<=count)
+    {
+        s=head;
+        for(i=1;i<pos;i++)
+        {
+            ptr=s;
+            s=s->next;
+        }
+        ptr->next=temp;
+        temp->next=s;
+    }
+    else
+    {
+        cout<<"not possible"<<endl;
+    }
+    display(ptr);
+}
+
+void sort()
+{
+    struct node *ptr,*s;
+    int value;
+    if(head==NULL)
+    {
+        cout<<"list is empty";
+    }
+    ptr=head;
+    while(ptr!=NULL)
+    {
+      for(s=ptr->next;s!=NULL;s=s->next)
+      {
+          if(ptr->data>s->data)
+          {
+              value=ptr->data;
+              ptr->data=s->data;
+              s->data=value;
+          }
+      }
+      ptr=ptr->next;
+    }
+    display(ptr);
+}
+
+void searching()
+{
+    int value,pos=0,flag=0;
+    struct node *s,*ptr;
+    if(head==NULL)
+    {
+        cout<<"leave"<<endl;
+    }
+    cout<<"enter element to search"<<endl;
+    cin>>value;
+    s=head;
+    while(s!=NULL)
+    {
+        pos++;
+        if(s->data==value)
+        {
+            flag=1;
+            cout<<"element found at"<<pos<<endl;
+        }
+        s=s->next;
+    }
+    if(flag==0)
+    {
+        cout<<"not found"<<endl;
+    }
+
+}
+
+void delete_pos()
+{
+    int pos=0,c=0,i;
+    struct node *s,*ptr;
+    if(head==NULL)
+    {
+        cout<<"leave"<<endl;
+    }
+    cout<<"enter pos to be deleted"<<endl;
+    cin>>pos;
+    s=head;
+    if(pos==1)
+    {
+        head=s->next;
+        delete(s);
+    }
+    else
+    {
+        while(s!=NULL)
+        {
+            s=s->next;
+            c++;
+        }
+        if(pos>0&&pos<=c)
+        {
+            s=head;
+            for(i=1;i<pos;i++)
+            {
+                ptr=s;
+                s=s->next;
+            }
+            ptr->next=s->next;
+            delete(s);
+            }
+        else
+        {
+            cout<<"not able to delete"<<endl;
+        }
+
+    }
+    display(ptr);
+}
+void reversing()
+{
+    struct node *ptr1,*ptr2,*ptr3,*ptr;
+    if(head==NULL)
+    {
+        cout<<"list is empty"<<endl;
+        return;
+    }
+    if(head->next==NULL)
+    {
+        return;
+    }
+    ptr1=head;
+    ptr2=ptr1->next;
+    ptr3=ptr2->next;
+    ptr1->next=NULL;
+    ptr2->next=ptr1;
+
+    while(ptr3!=NULL)
+    {
+        ptr1=ptr2;
+        ptr2=ptr3;
+        ptr3=ptr3->next;
+        ptr2->next=ptr1;
+    }
+    head=ptr2;
+    display(ptr);
+
+
+}
+
+int main()
+{
+    cout<<"insert at begin"<<endl;
+    insert_begin();
+    cout<<"insert at last"<<endl;
+    insert_last();
+    cout<<"insert at specified position"<<endl;
+    insert_pos();
+    cout<<"sorting"<<endl;
+    sort();
+    cout<<"searching"<<endl;
+    searching();
+    cout<<"deletion"<<endl;
+    delete_pos();
+    cout<<"reversing"<<endl;
+    reversing();
+
+}
